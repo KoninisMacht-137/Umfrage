@@ -33,16 +33,14 @@ button:disabled{opacity:.5}
   </div>
 </main>
 <script>
-/* ===== HIER ANPASSEN ===== */
-var ACCESS_KEY = "DEIN-ACCESS-KEY";   // kostenlos auf web3forms.com erstellen
+var ACCESS_KEY = bffde85e-8f7f-47d8-83b6-9842c18e5e0d;
 var FRAGEN = [
-  "Testfrage 1",
-  "Testfrage 2",
-  "Testfrage 3",
-  "Testfrage 4",
-  "Testfrage 5"
+  "Wie alt bist du?",
+  "Welches Geschlecht fühlst du dich zugehörig?",
+  "Spielst du Videospiele, wenn ja, welche und wie oft pro Woche?",
+  "Zweifelst du manchmal an dir selbst, wenn ja, warum?",
+  "Nenne ein Geheimnis über dich (geht in die Auswertung der Umfrage nicht ein)"
 ];
-/* ========================= */
 
 var qs = document.getElementById("qs");
 var status = document.getElementById("status");
@@ -68,7 +66,7 @@ send.addEventListener("click", function () {
     if (a) beantwortet++;
     zeilen.push((i + 1) + ". " + frage + "\n" + (a || "(keine Antwort)") + "\n");
   });
-  if (!beantwortet) { status.textContent = "Bitte beantworte mindestens eine Frage."; return; }
+  if (!beantwortet) { status.textContent = "Bitte beantworte alle Fragen."; return; }
   if (ACCESS_KEY === "DEIN-ACCESS-KEY") { status.textContent = "Der Access Key fehlt noch im Skript."; return; }
 
   send.disabled = true; status.textContent = "Wird gesendet …";
@@ -77,13 +75,13 @@ send.addEventListener("click", function () {
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({
       access_key: ACCESS_KEY,
-      subject: "Kennenlern-Spiel: " + name,
+      subject: "Umfrage 2026: " + name,
       from_name: name,
       message: zeilen.join("\n")
     })
   }).then(function (r) { return r.json(); }).then(function (j) {
     if (j && j.success) {
-      status.textContent = "Abgeschickt. Danke, " + name + "!";
+      status.textContent = "Danke für deine Zeit und Offenheit, " + name + "!";
       FRAGEN.forEach(function (f, i) { document.getElementById("a" + i).value = ""; });
     } else {
       status.textContent = "Das Senden hat nicht geklappt.";
